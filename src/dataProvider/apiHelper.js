@@ -19,12 +19,16 @@ export const createLyrics = async (text) => {
   }
 };
 
-export const createVideo = async (text) => {
+export const generateAudio = async (text) => {
   try {
-    const response = await fetcher.post(`${API_BASE_URL}/video/text-to-video`, {
-      contentType: 'video',
-      text,
-    });
+    // const response = await fetcher.post(`${API_BASE_URL}/video/text-to-video`, {
+    const response = await fetcher.post(
+      `http://localhost:8000/v1/generate-song`,
+      {
+        // contentType: 'video',
+        prompt: text,
+      }
+    );
     if (!response) throw new Error('Failed to create video');
     return response;
   } catch (error) {

@@ -1,7 +1,13 @@
 import { Box, Button, Divider, Popover, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useEffect } from 'react';
-import { ConnectButton } from '@mysten/dapp-kit';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import {
+  ConnectButton,
+  useCurrentAccount,
+  useDisconnectWallet,
+  useSignPersonalMessage,
+} from '@mysten/dapp-kit';
 import useWalletConnection from '../../hooks/useWalletConnection';
 
 const WalletOption = styled(Button)(({ theme }) => ({
@@ -48,9 +54,7 @@ const DisconnectButton = styled(Button)(({ theme }) => ({
 }));
 
 const WalletConnectModal = ({ anchorEl, onClose }) => {
-  console.log(anchorEl, 'anchorEl');
   const { walletState, handleDisconnect } = useWalletConnection();
-  console.log('🚀 ~ WalletConnectModal ~ walletState:', walletState);
 
   const open = Boolean(anchorEl);
 

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
@@ -6,31 +7,29 @@ import {
   Download,
   Flag,
   ExternalLink,
+  Pause,
+  Play,
 } from 'lucide-react';
-import { useParams } from 'next/router';
 
-export function ResultCard({ result }) {
+export function ResultCard({ result, onPlay, isPlaying }) {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef(null);
-  const router = useRouter();
+
   const handleClick = () => {
-    router.push(`/short/${result.id}`);
+    onPlay(result);
   };
 
   const handleShare = (e) => {
     e.stopPropagation();
-    // Handle share functionality
   };
 
   const handleDownload = (e) => {
     e.stopPropagation();
-    // Handle download functionality
     setShowMenu(false);
   };
 
   const handleReport = (e) => {
     e.stopPropagation();
-    // Handle report functionality
     setShowMenu(false);
   };
 
@@ -39,30 +38,25 @@ export function ResultCard({ result }) {
     setShowMenu(!showMenu);
   };
 
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setShowMenu(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   return (
     <div
       onClick={handleClick}
       className='mt-4 bg-[#2A2A2A] rounded-lg p-4 flex items-center gap-4 cursor-pointer hover:bg-[#333333] transition-colors'
     >
-      <div className='w-16 h-16 rounded-lg flex items-center justify-center relative bg-pink-400'>
-        <div className='w-8 h-8 bg-white rounded-full flex items-center justify-center'>
+      <div className='relative flex items-center justify-center w-16 h-16 bg-pink-400 rounded-lg'>
+        <div className='flex items-center justify-center w-8 h-8 bg-white rounded-full'>
           {/* <div className="w-2 h-2 bg-black rounded-full" /> */}
+          <div className='absolute inset-0 flex items-center justify-center rounded-lg bg-black/40'>
+            {isPlaying ? (
+              <Pause className='w-8 h-8 text-white' />
+            ) : (
+              <Play className='w-8 h-8 text-white' />
+            )}
+          </div>
           <img
-            src={result.thumbUrl}
+            src={result.imageUrl}
             alt='result'
-            className='rounded-lg w-12 h-12'
+            className='w-20 h-12 rounded-lg'
           />
         </div>
       </div>
@@ -71,10 +65,10 @@ export function ResultCard({ result }) {
         <p className='text-sm text-gray-400'>{result?.status}</p>
         {/* <p className="text-sm text-gray-400">{result.duration}</p> */}
       </div>
-      <div className='flex items-center gap-2'>
+      {/* <div className='flex items-center gap-2'>
         <button
           onClick={handleShare}
-          className='p-2 hover:bg-white/10 rounded-full transition-colors'
+          className='p-2 transition-colors rounded-full hover:bg-white/10'
         >
           <ExternalLink
             className='w-5 h-5 text-gray-400'
@@ -84,7 +78,7 @@ export function ResultCard({ result }) {
         <div className='relative' ref={menuRef}>
           <button
             onClick={toggleMenu}
-            className='p-2 hover:bg-white/10 rounded-full transition-colors'
+            className='p-2 transition-colors rounded-full hover:bg-white/10'
           >
             <MoreVertical className='w-5 h-5 text-gray-400' />
           </button>
@@ -116,7 +110,7 @@ export function ResultCard({ result }) {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

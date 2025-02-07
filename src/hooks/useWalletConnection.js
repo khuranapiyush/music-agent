@@ -6,6 +6,7 @@ import {
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { FANTV_API_URL } from '@/src/constant/constants';
+
 const useWalletConnection = () => {
   const account = useCurrentAccount();
   const { mutate: signPersonalMessage } = useSignPersonalMessage();
@@ -23,15 +24,18 @@ const useWalletConnection = () => {
 
   const requestNonce = async (address) => {
     try {
-      const response = await fetch(`${FANTV_API_URL}/v1/auth/request-nonce`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(address),
-      });
+      const response = await fetch(
+        `http://localhost:8000/v1/auth/request-nonce`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(address),
+        }
+      );
       const data = await response.json();
       return data.data.nonce;
     } catch (error) {
-      throw new Error('Failed to get nonce');
+      // throw new Error('Failed to get nonce');
     }
   };
 

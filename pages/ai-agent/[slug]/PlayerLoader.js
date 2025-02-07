@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const PlayerLoader = ({ isVideoLoading }) => {
   const [textIndex, setTextIndex] = useState(0);
   const sentences = [
-    "Creating script...",
-    "Creating thumbnail...",
-    "Creating audio...",
-    "Creating video...",
+    'Creating lyrics...',
+    'Creating thumbnail...',
+    'Creating audio...',
   ];
 
   useEffect(() => {
@@ -20,11 +19,11 @@ const PlayerLoader = ({ isVideoLoading }) => {
   }, [textIndex]);
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="text-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-t-purple-600 border-purple-600/30 mb-4"></div>
-        <div className="text-white text-lg">
-          {isVideoLoading ? sentences[textIndex] : "Creating lyrics..."}
+    <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm'>
+      <div className='text-center'>
+        <div className='inline-block w-12 h-12 mb-4 border-4 rounded-full animate-spin border-t-purple-600 border-purple-600/30'></div>
+        <div className='text-lg text-white'>
+          {isVideoLoading ? sentences[textIndex] : 'Creating lyrics...'}
         </div>
       </div>
     </div>

@@ -14,7 +14,6 @@ import { openLink } from '../../utils/common';
 const Banner = ({ data }) => {
   const isMobile = useMediaQuery('(max-width:768px)');
 
-  console.log(isMobile, 'isMobile');
   return (
     <Box
       className={'min-h rounded-t-[48px] rounded-b-none'}

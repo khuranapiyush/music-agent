@@ -184,7 +184,7 @@ const RevampHeader = ({ app }) => {
   return (
     <>
       <Box sx={styles.navbar} onClick={(e) => e.stopPropagation()}>
-        <Box className='nav-container'>
+        <Box className='nav-container bg-[#0E0E11]'>
           <Box display='flex'>
             <Box
               className='nav-logo'
@@ -193,7 +193,7 @@ const RevampHeader = ({ app }) => {
               {isMobile ? (
                 <Box className='fan__TigerMobileLogo'>
                   <img
-                    src={'/images/footer-logo.svg'}
+                    src={'/images/ai/muzicLogo.png'}
                     alt='mobile FanTV logo'
                     loading='eager'
                     decoding='async'
@@ -202,7 +202,7 @@ const RevampHeader = ({ app }) => {
               ) : (
                 <Box className='fan__tigerDekstopLogo'>
                   <img
-                    src={'/images/footer-logo.svg'}
+                    src={'/images/ai/muzicLogo.png'}
                     alt='FanTV Logo'
                     width={140}
                     loading='eager'

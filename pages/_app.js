@@ -14,6 +14,7 @@ import store from '../src/redux/store';
 import AppSeo from '../src/seo/app';
 import PageThemeProvider from '../src/styles/PageThemeProvider';
 import '/styles/globals.css';
+import '@mysten/dapp-kit/dist/index.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {

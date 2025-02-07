@@ -1,121 +1,203 @@
-import { Rocket } from 'lucide-react';
-import { useRouter } from 'next/router';
+/* eslint-disable @next/next/no-img-element */
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { ArrowLeft } from 'lucide-react';
+import PlayerLoader from './[slug]/PlayerLoader';
+import { fetchListAPI, generateAudio } from '../../src/dataProvider/apiHelper';
+import { ResultCard } from '../../src/component/ResultCard';
+import { AudioPlayer } from '../../src/component/HomeElement';
 
-const cards = [
-  {
-    id: 1,
-    title: 'Muzic AI',
-    description: 'Create songs with lyrical / music video',
-    path: '/ai-agent/muzicai',
-    icon: (
-      <svg
-        width='24'
-        height='24'
-        viewBox='0 0 24 24'
-        fill='none'
-        xmlns='http://www.w3.org/2000/svg'
-      >
-        <path
-          d='M21.7188 6.27879V7.44879C21.7188 8.42879 21.3288 9.26879 20.6388 9.75879C20.2088 10.0788 19.6788 10.2288 19.1288 10.2288C18.7888 10.2288 18.4488 10.1788 18.0988 10.0588L12.7188 8.26879V17.9988C12.7188 20.6188 10.5888 22.7488 7.96875 22.7488C5.34875 22.7488 3.21875 20.6188 3.21875 17.9988C3.21875 15.3788 5.34875 13.2488 7.96875 13.2488C9.22875 13.2488 10.3688 13.7488 11.2188 14.5488V3.99879C11.2188 3.02879 11.6188 2.18879 12.3088 1.68879C12.9988 1.19879 13.9188 1.08879 14.8388 1.38879L19.2588 2.86879C20.6188 3.31879 21.7188 4.84879 21.7188 6.27879Z'
-          fill='white'
-        />
-      </svg>
-    ),
-    comingSoon: false,
-  },
-];
+export default function ToolPage({ query }) {
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [list, setList] = useState([]);
+  const [error, setError] = useState(null);
+  const [currentTrack, setCurrentTrack] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
 
-export default function Page() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const slug = query?.slug;
+
+  const tool = useSelector((state) => state.aiToolsSlice.tools['muzicai']);
+
+  // const fetchAudioList = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:8000/v1/audio-list');
+  //     const result = await response.json();
+
+  //     if (result.success) {
+  //       setAudioList(result.data);
+  //     } else {
+  //       throw new Error(result.error || 'Failed to fetch audio list');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching audio list:', error);
+  //     setError(error.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchAudioList();
+  // }, []);
+
+  if (!tool) {
+    return <div>Tool not found</div>;
+  }
+
+  const handleCreate = async () => {
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      const response = await generateAudio(input);
+      setResult(response.data);
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePlay = (track) => {
+    if (currentTrack?._id === track._id) {
+      if (isPlaying) {
+        audioRef.current?.pause();
+      } else {
+        audioRef.current?.play();
+      }
+      setIsPlaying(!isPlaying);
+    } else {
+      setCurrentTrack(track);
+      setIsPlaying(true);
+    }
+  };
+
   return (
-    <div className='min-h-screen bg-[#1E1E1E] text-white p-4 mt-20'>
-      <header className='max-w-5xl mx-auto mb-12'>
-        <div className='flex'>
-          <img src='/images/ai.png' alt='' className='w-[80px] h-[80px]' />
-          <div className='flex flex-col ml-[16px]'>
-            <div className='flex items-center gap-4 mb-4'>
-              <h1 className='text-2xl font-bold md:text-4xl'>
-                TURNING IDEAS INTO REALITY
-              </h1>
+    <div className='flex h-screen bg-[#0E0E11] overflow-hidden'>
+      {/* Sidebar */}
+      <aside className='fixed inset-y-0 left-0 hidden w-64 bg-[#18181B] pt-24 md:block'>
+        <nav className='p-6 space-y-4'>
+          <div
+            onClick={() => router.push('/')}
+            className={`flex items-center space-x-2 text-white cursor-pointer hover:text-[#FF7F50] p-2 rounded-lg transition-all ${
+              pathname === '' ? 'bg-[#FF7F50]/10' : 'hover:text-[#FF7F50]'
+            }`}
+          >
+            <span className='text-lg'>🏠</span>
+            <span className='font-medium'>Home</span>
+          </div>
+          <div
+            onClick={() => router.push('/ai-agent')}
+            className={`flex items-center space-x-2 text-white cursor-pointer p-2 rounded-lg transition-all ${
+              pathname?.includes('/ai-agent')
+                ? 'bg-[#FF7F50]/10'
+                : 'hover:text-[#FF7F50]'
+            }`}
+          >
+            <span className='text-lg'>🎵</span>
+            <span className='font-medium'>Create</span>
+          </div>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <div className='flex-1 ml-64 overflow-y-auto bg-[#0E0E11]'>
+        {loading && <PlayerLoader isVideoLoading={slug !== 'scriptgen'} />}
+        <div className='h-[auto] bg-[#0E0E11] text-white p-4 md:p-8 mt-20'>
+          <div className='grid max-w-6xl grid-cols-1 gap-8 mx-auto md:grid-cols-2'>
+            {/* Left Column */}
+            <div className='md:border-r-[1px] md:border-[#353535] pr-[10px]'>
+              <div className='space-y-4'>
+                {/* <h2 className='text-xl font-medium'>Results</h2> */}
+                <h2 className='mb-12 text-xl font-bold text-white md:text-xl'>
+                  {tool.description}
+                </h2>
+                <div className='relative'>
+                  <textarea
+                    value={input}
+                    onChange={(e) =>
+                      setInput(e.target.value.slice(0, tool.maxChars))
+                    }
+                    placeholder={tool.placeholder}
+                    className='w-full h-[225px] bg-[#353535] rounded-xl p-4 text-gray-200 placeholder-gray-500 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500/50'
+                  />
+                  <div className='absolute text-sm text-gray-500 bottom-4 right-4'>
+                    {input.length}/{tool.maxChars}
+                  </div>
+                </div>
+                <div className='rounded-[100px] border-4 border-[#C87D48] bg-gradient-to-b from-[#FE954A] to-[#FC6C14]'>
+                  <button
+                    className='w-full text-black py-3 font-medium transition-colors rounded-[100px] border-2 border-[#FFD5A9]/20 bg-gradient-to-r from-[#FFD5A9]/50 via-[#FFD5A9] to-[#FFD5A9]/50 shadow-2xl shadow-black/75'
+                    onClick={handleCreate}
+                    disabled={loading}
+                  >
+                    {loading
+                      ? 'Loading...'
+                      : tool.description.split(' ')[0] === 'Music'
+                      ? 'Create a Song'
+                      : `Create a ${tool.description.split(' ')[0]}`}
+                  </button>
+                </div>
+              </div>
             </div>
-            <p className='text-[#D2D2D2] text-md w-[80%]'>
-              Your Ideas, Amplified - Transform Simple Text into Rich Digital
-              Experiences.
-            </p>
+
+            {/* Right Column */}
+            <div>
+              <div className='flex items-center justify-between mb-8'>
+                <h2 className='text-xl font-medium'>Results</h2>
+              </div>
+              {/* Results Section */}
+              {result ? (
+                <div className='my-4'>
+                  <ResultCard
+                    result={result}
+                    onPlay={handlePlay}
+                    isPlaying={false}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <p
+                    className='text-white/15 text-[50px] items-center justify-center font-bold leading-[150%] tracking-[-2.8px] uppercase'
+                    style={{ fontFamily: 'Bricolage Grotesque' }}
+                  >
+                    Nothing To Show
+                  </p>
+                </div>
+              )}
+
+              <div className='my-4'>
+                {list
+                  .filter((item) => item.type === 'story')
+                  .map((filteredItem) => (
+                    <ResultCard
+                      key={filteredItem.id}
+                      result={filteredItem}
+                      onPlay={handlePlay}
+                      isPlaying={false}
+                    />
+                  ))}
+              </div>
+            </div>
           </div>
         </div>
-      </header>
-
-      <main className='max-w-5xl mx-auto grid gap-8 md:grid-cols-3 mb-[150px]'>
-        {cards.map((card) => (
-          <FeatureCard
-            icon={card.icon}
-            title={card.title}
-            description={card.description}
-            key={card.id}
-            path={card.path}
-            {...card}
-          />
-        ))}
-      </main>
+      </div>
+      {/* Audio Player */}
+      {currentTrack && (
+        <AudioPlayer currentTrack={currentTrack} onNext={{}} onPrev={{}} />
+      )}
     </div>
   );
 }
 
-function FeatureCard({ icon, title, description, comingSoon, path }) {
-  const router = useRouter();
-  return (
-    <div className='relative'>
-      <div
-        className={`relative group rounded-[12px] h-[80px] w-[328px] p-0 ${
-          !comingSoon && 'cursor-pointer'
-        } transition-all duration-200`}
-        onClick={() => (!comingSoon ? router.push(path) : null)}
-      >
-        {/* Coming Soon Badge */}
-        {comingSoon && (
-          <div className='absolute -top-5 left-3 bg-[#6B61FF] text-white text-[10px] px-3 py-1 rounded-md z-1'>
-            Coming Soon
-          </div>
-        )}
-
-        {/* Gradient Border */}
-        <div className='absolute inset-0 bg-gradient-to-r from-[#fe9bf3] to-[#6b61ff] rounded-[12px]'></div>
-
-        {/* Inner Content Background */}
-        <div className='absolute inset-[1px] bg-[#353535] rounded-[10px] p-[16px] flex items-center'>
-          {/* Hover Effect */}
-          <div className='absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-[10px]' />
-
-          {/* Content */}
-          <div className='flex items-center justify-between'>
-            {/* Icon */}
-            <div className='w-[48px] h-[48px] bg-gradient-to-b from-[#6B61FF] to-[#FE9BF3] rounded-lg flex items-center justify-center text-purple-400'>
-              {icon}
-            </div>
-
-            {/* Title and Description */}
-            <div className='w-[190px] ml-4'>
-              <h3 className='text-white text-[15px]'>{title}</h3>
-              <p className='text-gray-400 text-[12px]'>{description}</p>
-            </div>
-
-            {/* Arrow Icon */}
-            <svg
-              className='w-5 h-5 ml-4 text-gray-500'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth={2}
-                d='M9 5l7 7-7 7'
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+export async function getServerSideProps(context) {
+  return {
+    props: { query: context.query },
+  };
 }

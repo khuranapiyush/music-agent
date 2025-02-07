@@ -13,7 +13,6 @@ const getToken = () => {
       localStorage.getItem('guestAccessToken'))
   ) {
     let token = localStorage.getItem('accessToken');
-    console.log('🚀 ~ getToken ~ token:', token);
 
     if (!!!token) {
       let guestAccesToken = localStorage.getItem('guestAccessToken');
@@ -21,7 +20,6 @@ const getToken = () => {
     }
     return token;
   }
-  // return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NGJmNjZmZGEwODhmYjJkNTFjZmI0OTIiLCJpYXQiOjE3MzQwMDU1NjAsImV4cCI6MTc2NTU2MzE2MCwidHlwZSI6ImFjY2VzcyJ9.Gv6m6yLZh6DsNkpchaehYCsyOpNTUZ1Nv5SVyHhwCiY";
 };
 
 Api.interceptors.request.use(
@@ -36,7 +34,6 @@ Api.interceptors.request.use(
       }
     }
     request.headers.platform = 'web';
-    console.log('🚀 ~ reqest:', request.url);
 
     return request;
   },
