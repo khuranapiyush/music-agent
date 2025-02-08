@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import { API_BASE_URL } from '../../constant/constants';
 
 // AudioPlayer Component
 export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
@@ -193,7 +194,7 @@ const MusicDiscovery = () => {
 
   const fetchAudioList = async () => {
     try {
-      const response = await fetch('http://localhost:8000/v1/audio-list');
+      const response = await fetch(`${API_BASE_URL}/v1/audio-list`);
       const result = await response.json();
 
       if (result.success) {

@@ -24,28 +24,6 @@ export default function ToolPage({ query }) {
 
   const tool = useSelector((state) => state.aiToolsSlice.tools['muzicai']);
 
-  // const fetchAudioList = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:8000/v1/audio-list');
-  //     const result = await response.json();
-
-  //     if (result.success) {
-  //       setAudioList(result.data);
-  //     } else {
-  //       throw new Error(result.error || 'Failed to fetch audio list');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching audio list:', error);
-  //     setError(error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchAudioList();
-  // }, []);
-
   if (!tool) {
     return <div>Tool not found</div>;
   }

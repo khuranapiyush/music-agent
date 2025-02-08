@@ -1,9 +1,5 @@
 import React from 'react';
 import { Box, Container, Grid, Typography, Link } from '@mui/material';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import TelegramIcon from '@mui/icons-material/Telegram';
-import Discord from '@mui/icons-material/Forum';
 
 const Footer = () => {
   return (
