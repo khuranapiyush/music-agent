@@ -202,7 +202,6 @@ const RevampHeader = ({ app }) => {
           </Box>
           <Box>
             <Box sx={styles.btnContainer} onClick={handleWalletClick}>
-              {!isWalletConnected && <img src='/images/rocket-launch.svg' />}
               {isWalletConnected ? (
                 <Button
                   sx={{
