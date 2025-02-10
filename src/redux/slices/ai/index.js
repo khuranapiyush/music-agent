@@ -9,7 +9,7 @@ const initialState = {
       description: 'Music Description',
       maxChars: 200,
       placeholder:
-        'Describe the style of music and the topic you want, AI will generate lyrics for you',
+        'Describe the style of music and the topic you want, AI will generate music for you',
     },
     scriptgen: {
       id: 'articulate-ai',

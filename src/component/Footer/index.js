@@ -5,8 +5,11 @@ const Footer = () => {
   return (
     <Box
       sx={{
-        bgcolor: '#1A1A1A',
-        py: { xs: '50px', md: '100px' },
+        bgcolor: '#0E0E11',
+        py: { xs: '10px', md: '80px' },
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
         fontFamily: 'Nohemi',
       }}
     >

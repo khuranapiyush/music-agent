@@ -12,19 +12,21 @@ import WalletConnectModal from './WalletConnectModal';
 import styles from './style';
 import MenuIcon from '@mui/icons-material/Menu';
 import useWalletConnection from '../../hooks/useWalletConnection';
+import { X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const LogOutNavItem = [
   {
-    path: '/airdrop',
-    title: 'Airdrop ',
-    icon: '/images/fantv/menu/reward.svg',
+    path: '/',
+    title: 'Home',
+    icon: '🏠',
     newTag: false,
   },
   {
-    path: '/',
-    title: 'Whitepaper ',
-    icon: '/images/fantv/menu/reward.svg',
-    newTag: true,
+    path: '/ai-agent',
+    title: 'Create',
+    icon: '🎵',
+    newTag: false,
   },
 ];
 
@@ -58,7 +60,6 @@ const RevampHeader = ({ app }) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const isLoggedIn = false;
   const isMobile = useIsMobile(app?.deviceParsedInfo?.device?.isMobile);
 
   const toggleDrawer = (open) => (event) => {
@@ -79,12 +80,14 @@ const RevampHeader = ({ app }) => {
     }
   }, [walletState, walletState?.state]);
 
+  const pathname = usePathname();
+
   const drawerContent = (
     <Box
       sx={{
         width: 250,
         height: '100%',
-        background: 'white',
+        background: '#18181B',
         backdropFilter: 'blur(40px)',
       }}
       role='presentation'
@@ -96,13 +99,15 @@ const RevampHeader = ({ app }) => {
         sx={{ gap: 2, alignItems: 'center', padding: 2 }}
         onClick={toggleDrawer(false)}
       >
-        <img
-          style={{ height: '32px', width: '32px' }}
+        {/* <img
+          style={{ height: '32px', width: '32px', color: '#FFF' }}
           src='/images/close.svg'
-        />
+          alt='close icon'
+        /> */}
+        <X />
       </Box>
       <Box sx={styles.mobileScroll}>
-        <Box
+        {/* <Box
           display='block'
           sx={{
             gap: '10px',
@@ -130,7 +135,7 @@ const RevampHeader = ({ app }) => {
               {airdropPoints}
             </Typography>
           </Box>
-        </Box>
+        </Box> */}
         {LogOutNavItem?.map((item, i) => (
           <Link key={i} prefetch={false} href={item?.path} passHref>
             <Box
@@ -138,7 +143,6 @@ const RevampHeader = ({ app }) => {
               justifyContent='space-between'
               alignItems='center'
               padding={2}
-              borderBottom='1px solid #e0e0e0'
               onClick={() => {
                 setIsMenuOpen(false);
               }}
@@ -147,7 +151,7 @@ const RevampHeader = ({ app }) => {
                 variant='h6'
                 className='nav-item'
                 sx={{
-                  color: router.pathname === item?.path ? '#000000' : '#000000',
+                  color: router.pathname === item?.path ? '#FFF' : '#FFF',
                   fontFamily: 'Nohemi',
                   fontSize: '16px',
                   fontWeight: 500,
@@ -155,24 +159,8 @@ const RevampHeader = ({ app }) => {
                   alignItems: 'center',
                 }}
               >
+                <span className='text-lg'>{item.icon}</span>
                 {item?.title}
-                {item.newTag && (
-                  <Box
-                    sx={{
-                      marginLeft: '10px',
-                      backgroundColor: 'rgb(225, 64, 132)',
-                      padding: '2px 5px',
-                      borderRadius: '10px',
-                      fontSize: '8px',
-                      fontWeight: 700,
-                      color: 'rgb(255, 255, 255)',
-                      textAlign: 'center',
-                      display: 'inline-block',
-                    }}
-                  >
-                    Coming Soon
-                  </Box>
-                )}
               </Typography>
             </Box>
           </Link>
@@ -188,7 +176,7 @@ const RevampHeader = ({ app }) => {
           <Box display='flex'>
             <Box
               className='nav-logo'
-              // onClick={() => window?.open(``, '_blank', 'noopener,noreferrer')}
+              onClick={() => window?.open('/', '_self', 'noopener,noreferrer')}
             >
               {isMobile ? (
                 <Box className='fan__TigerMobileLogo'>
@@ -214,7 +202,7 @@ const RevampHeader = ({ app }) => {
           </Box>
           <Box>
             <Box sx={styles.btnContainer} onClick={handleWalletClick}>
-              <img src='/images/rocket-launch.svg' />
+              {!isWalletConnected && <img src='/images/rocket-launch.svg' />}
               {isWalletConnected ? (
                 <Button
                   sx={{

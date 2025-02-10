@@ -1,10 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { ArrowLeft } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import PlayerLoader from './[slug]/PlayerLoader';
-import { fetchListAPI, generateAudio } from '../../src/dataProvider/apiHelper';
+import { generateAudio } from '../../src/dataProvider/apiHelper';
 import { ResultCard } from '../../src/component/ResultCard';
 import { AudioPlayer } from '../../src/component/HomeElement';
 
@@ -16,6 +15,7 @@ export default function ToolPage({ query }) {
   const [error, setError] = useState(null);
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const audioRef = useRef(null);
 
   const router = useRouter();
@@ -56,9 +56,58 @@ export default function ToolPage({ query }) {
     }
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <div className='flex h-screen bg-[#0E0E11] overflow-hidden'>
-      {/* Sidebar */}
+    <div className='flex md:h-screen xs:h-full bg-[#0E0E11] overflow-hidden'>
+      {/* Mobile Header */}
+      {/* <div className='fixed top-0 left-0 right-0 z-20 flex items-center justify-between p-4 bg-[#18181B] md:hidden'>
+        <button onClick={toggleMobileMenu} className='text-white'>
+          <Menu className='w-6 h-6' />
+        </button>
+        <h1 className='text-lg font-bold text-white'>Music AI</h1>
+        <div className='w-6'></div>
+      </div> */}
+
+      {/* Mobile Sidebar */}
+      {isMobileMenuOpen && (
+        <div
+          className='fixed inset-0 z-30 bg-black/50 md:hidden'
+          onClick={toggleMobileMenu}
+        >
+          <aside
+            className='w-64 h-full bg-[#18181B] pt-24 shadow-lg'
+            onClick={(e) => e.stopPropagation()}
+          >
+            <nav className='p-6 space-y-4'>
+              <div
+                onClick={() => {
+                  router.push('/');
+                  toggleMobileMenu();
+                }}
+                className='flex items-center space-x-2 text-white cursor-pointer hover:text-[#FF7F50] p-2 rounded-lg transition-all'
+              >
+                <span className='text-lg'>🏠</span>
+                <span className='font-medium'>Home</span>
+              </div>
+              <div
+                onClick={() => {
+                  router.push('/ai-agent');
+                  toggleMobileMenu();
+                }}
+                className='flex items-center space-x-2 text-white cursor-pointer hover:text-[#FF7F50] p-2 rounded-lg transition-all'
+              >
+                <span className='text-lg'>🎵</span>
+                <span className='font-medium'>Create</span>
+              </div>
+            </nav>
+          </aside>
+        </div>
+      )}
+
+      {/* Desktop Sidebar */}
       <aside className='fixed inset-y-0 left-0 hidden w-64 bg-[#18181B] pt-24 md:block'>
         <nav className='p-6 space-y-4'>
           <div
@@ -85,15 +134,14 @@ export default function ToolPage({ query }) {
       </aside>
 
       {/* Main Content */}
-      <div className='flex-1 ml-64 overflow-y-auto bg-[#0E0E11]'>
+      <div className='flex-1 md:ml-64 overflow-y-auto bg-[#0E0E11] pt-20 md:pt-0'>
         {loading && <PlayerLoader isVideoLoading={slug !== 'scriptgen'} />}
-        <div className='h-[auto] bg-[#0E0E11] text-white p-4 md:p-8 mt-20'>
+        <div className='h-[auto] bg-[#0E0E11] text-white p-4 md:p-8 md:mt-20'>
           <div className='grid max-w-6xl grid-cols-1 gap-8 mx-auto md:grid-cols-2'>
             {/* Left Column */}
-            <div className='md:border-r-[1px] md:border-[#353535] pr-[10px]'>
+            <div className='md:border-r-[1px] md:border-[#353535] md:pr-[10px]'>
               <div className='space-y-4'>
-                {/* <h2 className='text-xl font-medium'>Results</h2> */}
-                <h2 className='mb-12 text-xl font-bold text-white md:text-xl'>
+                <h2 className='mb-6 text-xl font-bold text-white md:text-xl'>
                   {tool.description}
                 </h2>
                 <div className='relative'>
@@ -103,7 +151,7 @@ export default function ToolPage({ query }) {
                       setInput(e.target.value.slice(0, tool.maxChars))
                     }
                     placeholder={tool.placeholder}
-                    className='w-full h-[225px] bg-[#353535] rounded-xl p-4 text-gray-200 placeholder-gray-500 resize-none focus:outline-none focus:ring-2 focus:ring-purple-500/50'
+                    className='w-full h-[225px] bg-[#353535] rounded-xl p-4 text-gray-200 placeholder-gray-500 resize-none focus:outline-none focus:ring-2 focus:ring-[#FE964A]'
                   />
                   <div className='absolute text-sm text-gray-500 bottom-4 right-4'>
                     {input.length}/{tool.maxChars}
@@ -142,7 +190,7 @@ export default function ToolPage({ query }) {
               ) : (
                 <div>
                   <p
-                    className='text-white/15 text-[50px] items-center justify-center font-bold leading-[150%] tracking-[-2.8px] uppercase'
+                    className='text-white/15 text-[50px] items-center justify-center font-bold leading-[150%] tracking-[-2.8px] uppercase text-center md:text-left'
                     style={{ fontFamily: 'Bricolage Grotesque' }}
                   >
                     Nothing To Show
@@ -166,6 +214,7 @@ export default function ToolPage({ query }) {
           </div>
         </div>
       </div>
+
       {/* Audio Player */}
       {currentTrack && (
         <AudioPlayer currentTrack={currentTrack} onNext={{}} onPrev={{}} />
