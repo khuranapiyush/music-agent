@@ -13,7 +13,7 @@ import {
 import PlayerLoader from './PlayerLoader';
 import {
   generateAudio,
-  fetchListAPI,
+  // fetchListAPI,
 } from '../../../src/dataProvider/apiHelper';
 import { ResultCard } from '../../../src/component/ResultCard';
 
@@ -33,19 +33,19 @@ export default function ToolPage({ query }) {
 
   const tool = useSelector((state) => state.aiToolsSlice.tools[slug]);
 
-  useEffect(() => {
-    if (!slug) return;
-    const fetchList = async () => {
-      try {
-        const response = await fetchListAPI();
-        setList(response.data);
-      } catch (err) {
-        setError('Failed to fetch list.');
-      }
-    };
+  // useEffect(() => {
+  //   if (!slug) return;
+  //   const fetchList = async () => {
+  //     try {
+  //       const response = await fetchListAPI();
+  //       setList(response.data);
+  //     } catch (err) {
+  //       setError('Failed to fetch list.');
+  //     }
+  //   };
 
-    fetchList();
-  }, [slug]);
+  //   fetchList();
+  // }, [slug]);
 
   if (!tool) {
     return <div>Tool not found</div>;

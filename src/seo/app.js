@@ -3,26 +3,26 @@ import {
   DefaultSeo,
   SiteLinksSearchBoxJsonLd,
   SocialProfileJsonLd,
-} from "next-seo";
+} from 'next-seo';
 
 const AppSeo = () => {
   return (
     <>
       <DefaultSeo
-        title="Agent Nation - Ultimate AI Agent Marketplace on SUI"
-        description="Ultimate AI Agent Marketplace on SUI"
+        title='MakeMySong - Create Music songs using AI'
+        description='Create Music songs using AI'
         additionalMetaTags={[
           {
-            property: "al:android:url",
-            content: "fantiger://",
+            property: 'al:android:url',
+            content: 'fantiger://',
           },
           {
-            property: "al:android:app_name",
-            content: "FanTV",
+            property: 'al:android:app_name',
+            content: 'FanTV',
           },
           {
-            property: "al:android:package",
-            content: "com.fantv",
+            property: 'al:android:package',
+            content: 'com.fantv',
           },
         ]}
       />
