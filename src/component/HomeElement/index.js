@@ -10,50 +10,292 @@ import {
 } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { API_BASE_URL } from '../../constant/constants';
+import { Howl } from 'howler';
 
-// AudioPlayer Component
 export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const audioRef = useRef(null);
+  const [volume, setVolume] = useState(1.0);
+  const [isReady, setIsReady] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const soundRef = useRef(null);
+  const animationRef = useRef(null);
 
+  // Fix for iOS - ensure audio context is resumed after user interaction
   useEffect(() => {
-    if (currentTrack && audioRef.current) {
-      audioRef.current.src = currentTrack.audioUrl;
-      audioRef.current.load();
+    const resumeAudioContext = () => {
+      if (Howler.ctx && Howler.ctx.state !== 'running') {
+        Howler.ctx.resume();
+      }
+      document.removeEventListener('touchstart', resumeAudioContext);
+      document.removeEventListener('touchend', resumeAudioContext);
+      document.removeEventListener('click', resumeAudioContext);
+    };
+
+    document.addEventListener('touchstart', resumeAudioContext);
+    document.addEventListener('touchend', resumeAudioContext);
+    document.addEventListener('click', resumeAudioContext);
+
+    return () => {
+      document.removeEventListener('touchstart', resumeAudioContext);
+      document.removeEventListener('touchend', resumeAudioContext);
+      document.removeEventListener('click', resumeAudioContext);
+    };
+  }, []);
+
+  // Core cleanup function
+  const cleanupSound = () => {
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
+
+    if (soundRef.current) {
+      soundRef.current.unload();
+      soundRef.current = null;
+    }
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      cleanupSound();
+    };
+  }, []);
+
+  // Process audio URL for iOS compatibility
+  const processAudioUrl = (url) => {
+    if (!url) return '';
+
+    let cleanUrl = url.split('?')[0].split('#')[0];
+
+    // Special handling for Walrus blob URLs
+    if (url.includes('walrus') && url.includes('/blobs/')) {
+      if (!url.endsWith('.mp3')) {
+        cleanUrl = `${cleanUrl}`;
+      }
+    } else if (!cleanUrl.match(/\.(mp3|m4a|aac|wav)$/i)) {
+      cleanUrl = `${cleanUrl}`;
+    }
+
+    return cleanUrl;
+  };
+
+  // Initialize or update Howler sound instance when track changes
+  useEffect(() => {
+    // Reset state
+    setIsPlaying(false);
+    setCurrentTime(0);
+    setDuration(0);
+    setIsReady(false);
+    setLoadError(false);
+
+    // Clean up previous resources
+    cleanupSound();
+
+    // Skip if no track
+    if (!currentTrack?.audioUrl) return;
+
+    // Process the URL for iOS
+    const processedUrl = processAudioUrl(currentTrack.audioUrl);
+
+    // Small timeout to ensure proper cleanup
+    setTimeout(() => {
+      try {
+        // Create new Howl instance with iOS-specific optimizations
+        soundRef.current = new Howl({
+          src: [processedUrl],
+          html5: true, // Use HTML5 Audio for streaming
+          preload: true,
+          format: ['mp3'],
+          xhr: {
+            method: 'GET',
+            headers: {
+              // Disable caching which can cause issues on iOS
+              'Cache-Control': 'no-cache',
+              Pragma: 'no-cache',
+              // Force content type to audio/mpeg for iOS
+              Accept: 'audio/mpeg, audio/mp3, audio/*',
+            },
+            withCredentials: false,
+          },
+          onload: () => {
+            if (soundRef.current) {
+              setDuration(soundRef.current.duration());
+              setIsReady(true);
+              setLoadError(false);
+            }
+          },
+          onplay: () => {
+            setIsPlaying(true);
+            animationRef.current = requestAnimationFrame(updateSeekPosition);
+          },
+          onpause: () => {
+            setIsPlaying(false);
+            if (animationRef.current) {
+              cancelAnimationFrame(animationRef.current);
+              animationRef.current = null;
+            }
+          },
+          onstop: () => {
+            setIsPlaying(false);
+            setCurrentTime(0);
+            if (animationRef.current) {
+              cancelAnimationFrame(animationRef.current);
+              animationRef.current = null;
+            }
+          },
+          onend: () => {
+            setIsPlaying(false);
+            if (animationRef.current) {
+              cancelAnimationFrame(animationRef.current);
+              animationRef.current = null;
+            }
+
+            if (onNext) {
+              setTimeout(() => onNext(), 100);
+            }
+          },
+          onloaderror: (id, error) => {
+            // console.error('Error loading audio:', error);
+            setLoadError(true);
+
+            // For Walrus URLs, try an alternative approach if the direct URL with .mp3 fails
+            if (
+              currentTrack.audioUrl.includes('walrus') &&
+              currentTrack.audioUrl.includes('/blobs/')
+            ) {
+              // Clean up failed instance
+              if (soundRef.current) {
+                soundRef.current.unload();
+                soundRef.current = null;
+              }
+
+              // Try with an Audio element approach (works better on some iOS versions)
+              const audio = new Audio();
+              audio.crossOrigin = 'anonymous';
+
+              audio.addEventListener('canplaythrough', () => {
+                // Create a new Howl instance with the manually loaded audio
+                soundRef.current = new Howl({
+                  src: [currentTrack.audioUrl + '.mp3'], // Try again with .mp3
+                  html5: true,
+                  format: ['mp3'],
+                  onload: () => {
+                    if (soundRef.current) {
+                      setDuration(soundRef.current.duration());
+                      setIsReady(true);
+                      setLoadError(false);
+                    }
+                  },
+                  onloaderror: () => {
+                    // console.error('Alternative method also failed');
+                    setLoadError(true);
+                  },
+                });
+              });
+
+              audio.addEventListener('error', () => {
+                // console.error('Alternative method also failed to load audio');
+                setLoadError(true);
+              });
+
+              // Try to load the audio
+              audio.src = currentTrack.audioUrl + '.mp3';
+              audio.load();
+            }
+          },
+          onplayerror: (id, error) => {
+            // console.error('Error playing audio:', error);
+
+            // Try to recover by reloading
+            if (soundRef.current) {
+              soundRef.current.once('unlock', () => {
+                soundRef.current.play();
+              });
+            }
+          },
+        });
+      } catch (error) {
+        // console.error('Error setting up Howler:', error);
+        setLoadError(true);
+      }
+    }, 100);
+  }, [currentTrack, onNext]);
+
+  // Update seek position during playback
+  const updateSeekPosition = () => {
+    if (soundRef.current && soundRef.current.playing()) {
+      try {
+        const seek = soundRef.current.seek() || 0;
+        if (!isNaN(seek)) {
+          setCurrentTime(seek);
+        }
+        animationRef.current = requestAnimationFrame(updateSeekPosition);
+      } catch (error) {
+        // console.error('Error updating seek position:', error);
+        animationRef.current = requestAnimationFrame(updateSeekPosition);
+      }
+    }
+  };
+
+  const togglePlay = () => {
+    if (!soundRef.current || !isReady) return;
+
+    try {
       if (isPlaying) {
-        audioRef.current.play().catch((error) => {
-          console.error('Playback error:', error);
+        soundRef.current.pause();
+      } else {
+        // If at the end, restart
+        if (currentTime >= duration - 0.1) {
+          soundRef.current.seek(0);
+        }
+        soundRef.current.play();
+      }
+    } catch (error) {
+      // console.error('Error toggling play state:', error);
+
+      // Recovery attempt for iOS
+      if (Howler.ctx && Howler.ctx.state !== 'running') {
+        Howler.ctx.resume().then(() => {
+          if (soundRef.current) {
+            soundRef.current.play();
+          }
         });
       }
     }
-  }, [currentTrack]);
-
-  const togglePlay = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
-  const handleTimeUpdate = () => {
-    setCurrentTime(audioRef.current.currentTime);
-  };
-
-  const handleLoadedMetadata = () => {
-    setDuration(audioRef.current.duration);
   };
 
   const handleSeek = (e) => {
-    const time = e.target.value;
-    audioRef.current.currentTime = time;
-    setCurrentTime(time);
+    const value = parseFloat(e.target.value);
+
+    if (soundRef.current && !isNaN(value)) {
+      try {
+        soundRef.current.seek(value);
+        setCurrentTime(value);
+      } catch (error) {
+        // console.error('Error seeking:', error);
+      }
+    }
+  };
+
+  const handleVolumeChange = (e) => {
+    const value = parseFloat(e.target.value);
+    setVolume(value);
+
+    if (soundRef.current) {
+      try {
+        soundRef.current.volume(value);
+      } catch (error) {
+        // console.error('Error changing volume:', error);
+      }
+    }
   };
 
   const formatTime = (time) => {
+    if (isNaN(time)) return '0:00';
+
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
@@ -61,13 +303,6 @@ export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
 
   return (
     <div className='fixed bottom-0 left-0 right-0 bg-[#1E1E1E] text-white p-2 border-t border-gray-800'>
-      <audio
-        ref={audioRef}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleLoadedMetadata}
-        onEnded={onNext || {}}
-        preload='auto'
-      />
       <div className='container mx-auto'>
         {/* Desktop Layout */}
         <div className='flex-col items-center justify-between hidden gap-4 md:flex md:flex-row'>
@@ -82,6 +317,9 @@ export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
                 <div>
                   <h4 className='font-medium'>{currentTrack.title}</h4>
                   <p className='text-sm text-gray-400'>{currentTrack.style}</p>
+                  {loadError && (
+                    <p className='text-xs text-red-400'>Unable to load audio</p>
+                  )}
                 </div>
               </>
             )}
@@ -90,14 +328,16 @@ export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
           <div className='flex flex-col items-center flex-1 gap-2'>
             <div className='flex items-center gap-4'>
               <button
-                onClick={onPrev || {}}
+                onClick={onPrev}
                 className='p-2 hover:text-[#FF7F50]'
+                disabled={!onPrev || !isReady}
               >
                 <SkipBack className='w-5 h-5' />
               </button>
               <button
                 onClick={togglePlay}
                 className='p-2 bg-[#FF7F50] rounded-full hover:bg-[#FF7F50]/80'
+                disabled={!isReady || loadError}
               >
                 {isPlaying ? (
                   <Pause className='w-6 h-6' />
@@ -105,7 +345,11 @@ export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
                   <Play className='w-6 h-6' />
                 )}
               </button>
-              <button onClick={onNext} className='p-2 hover:text-[#FF7F50]'>
+              <button
+                onClick={onNext}
+                className='p-2 hover:text-[#FF7F50]'
+                disabled={!onNext || !isReady}
+              >
                 <SkipForward className='w-5 h-5' />
               </button>
             </div>
@@ -116,9 +360,11 @@ export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
                 type='range'
                 min={0}
                 max={duration || 0}
+                step='0.01'
                 value={currentTime}
                 onChange={handleSeek}
                 className='flex-1 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer'
+                disabled={!isReady || loadError}
               />
               <span className='text-xs'>{formatTime(duration)}</span>
             </div>
@@ -131,9 +377,10 @@ export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
               min={0}
               max={1}
               step={0.1}
-              defaultValue={1}
-              onChange={(e) => (audioRef.current.volume = e.target.value)}
+              value={volume}
+              onChange={handleVolumeChange}
               className='w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer'
+              disabled={!isReady || loadError}
             />
           </div>
         </div>
@@ -155,19 +402,24 @@ export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
                   <p className='text-xs text-gray-400 truncate max-w-[150px]'>
                     {currentTrack.style}
                   </p>
+                  {loadError && (
+                    <p className='text-xs text-red-400'>Unable to load audio</p>
+                  )}
                 </div>
               </div>
             )}
             <div className='flex items-center gap-2'>
               <button
-                onClick={onPrev || {}}
+                onClick={onPrev}
                 className='p-1 hover:text-[#FF7F50]'
+                disabled={!onPrev || !isReady}
               >
                 <SkipBack className='w-4 h-4' />
               </button>
               <button
                 onClick={togglePlay}
                 className='p-1 bg-[#FF7F50] rounded-full hover:bg-[#FF7F50]/80'
+                disabled={!isReady || loadError}
               >
                 {isPlaying ? (
                   <Pause className='w-5 h-5' />
@@ -175,7 +427,11 @@ export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
                   <Play className='w-5 h-5' />
                 )}
               </button>
-              <button onClick={onNext} className='p-1 hover:text-[#FF7F50]'>
+              <button
+                onClick={onNext}
+                className='p-1 hover:text-[#FF7F50]'
+                disabled={!onNext || !isReady}
+              >
                 <SkipForward className='w-4 h-4' />
               </button>
             </div>
@@ -189,9 +445,11 @@ export const AudioPlayer = ({ currentTrack, onNext, onPrev }) => {
               type='range'
               min={0}
               max={duration || 0}
+              step='0.01'
               value={currentTime}
               onChange={handleSeek}
               className='flex-1 h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer'
+              disabled={!isReady || loadError}
             />
             <span className='w-8 text-xs'>{formatTime(duration)}</span>
           </div>
@@ -278,7 +536,7 @@ const MusicDiscovery = () => {
         throw new Error(result.error || 'Failed to fetch audio list');
       }
     } catch (error) {
-      console.error('Error fetching audio list:', error);
+      // console.error('Error fetching audio list:', error);
       setError(error.message);
     } finally {
       setLoading(false);
