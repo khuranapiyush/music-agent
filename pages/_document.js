@@ -64,6 +64,10 @@ class MyDocument extends Document {
             name='twitter:image'
             content='https://assets.artistfirst.in/uploads/1736488883453-OGImageNew.png'
           /> */}
+          <meta
+            name='google-site-verification'
+            content='-QEKZgU3a2ov8X7Pp_lI5-4WxlSFE-vL-V2aTuxVgAw'
+          />
         </Head>
         <body>
           <Main />
