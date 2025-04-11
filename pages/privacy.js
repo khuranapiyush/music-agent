@@ -441,6 +441,10 @@ const PrivacyPolicy = () => {
         </div>
       </main>
 
+      <footer className='footer'>
+        <div className='footer-content'>Privacy and Policy</div>
+      </footer>
+
       <style jsx>{`
         /* Global Styles */
         :global(body) {
@@ -545,21 +549,19 @@ const PrivacyPolicy = () => {
 
         /* Footer Styles */
         .footer {
+          width: 100%;
           background-color: #0e0e11;
-          padding: 1.5rem;
+          padding: 1.5rem 0;
           border-top: 1px solid rgba(255, 255, 255, 0.1);
+          position: relative;
+          bottom: 0;
         }
 
         .footer-content {
-          max-width: 1200px;
-          margin: 0 auto;
           text-align: center;
-        }
-
-        .footer p {
-          font-size: 0.85rem;
-          margin: 0;
-          color: #8e8e8e;
+          color: #fff;
+          font-size: 1rem;
+          font-weight: 500;
         }
 
         /* Responsive Styles */
