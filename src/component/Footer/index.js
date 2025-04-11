@@ -15,6 +15,17 @@ const Footer = () => {
     >
       <Container>
         <Grid container spacing={4}>
+  <style jsx>{`
+            .footer-content {
+              text-align: center;
+              font-size: 1rem;
+              font-weight: 500;
+            }
+
+            .footer-content :global(a):hover {
+              text-decoration: underline !important;
+            }
+          `}</style>
           {/* Logo and Description Section */}
           <Grid item xs={12} md={12}>
             <Box
@@ -32,6 +43,18 @@ const Footer = () => {
                 sx={{ height: 66 }}
               />
             </Box>
+ <div className='footer-content'>
+              <Link
+                href='/privacy'
+                style={{
+                  color: '#fff',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                Privacy and Policy
+              </Link>
+            </div>
             {/* <Typography variant="body2" sx={{ mb: 2, color: "#FFFDD4" }}>
               The end-to-end platform for
               <br /> creators powered by AI
