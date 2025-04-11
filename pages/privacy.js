@@ -5,7 +5,7 @@ const PrivacyPolicy = () => {
   return (
     <div className='privacy-policy-container'>
       <Head>
-        <title>FanTV - Privacy Policy</title>
+        <title>MakeMySong - Privacy Policy</title>
         <meta name='description' content='FanTV Privacy Policy' />
         <link rel='preconnect' href='https://fonts.googleapis.com' />
         <link
