@@ -15,17 +15,6 @@ const Footer = () => {
     >
       <Container>
         <Grid container spacing={4}>
-  <style jsx>{`
-            .footer-content {
-              text-align: center;
-              font-size: 1rem;
-              font-weight: 500;
-            }
-
-            .footer-content :global(a):hover {
-              text-decoration: underline !important;
-            }
-          `}</style>
           {/* Logo and Description Section */}
           <Grid item xs={12} md={12}>
             <Box
@@ -43,17 +32,30 @@ const Footer = () => {
                 sx={{ height: 66 }}
               />
             </Box>
- <div className='footer-content'>
-              <Link
-                href='/privacy'
-                style={{
-                  color: '#fff',
-                  textDecoration: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                Privacy and Policy
-              </Link>
+            <div className='left-0 right-0 bottom-0 bg-[#0E0E11] border-t border-gray-800 py-4'>
+              <div className='px-4 text-center footer-content'>
+                <div className='mb-2 footer-nav'>
+                  <Link
+                    href='/privacy'
+                    className='text-white no-underline hover:underline'
+                  >
+                    Privacy and Policy
+                  </Link>
+                </div>
+                <div className='footer-contact'>
+                  <p className='m-0 text-xs text-gray-400'>
+                    Contact: ‪+91 9910008280
+                  </p>
+                  <p className='m-0 text-xs text-gray-400'>
+                    <a
+                      href='mailto:hello@artistfirst.in'
+                      className='text-gray-400 no-underline hover:underline'
+                    >
+                      hello@artistfirst.in
+                    </a>
+                  </p>
+                </div>
+              </div>
             </div>
             {/* <Typography variant="body2" sx={{ mb: 2, color: "#FFFDD4" }}>
               The end-to-end platform for
