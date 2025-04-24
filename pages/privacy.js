@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
     <div className='privacy-policy-container'>
       <Head>
         <title>MakeMySong - Privacy Policy</title>
-        <meta name='description' content='FanTV Privacy Policy' />
+        <meta name='description' content='MakeMySong Privacy Policy' />
         <link rel='preconnect' href='https://fonts.googleapis.com' />
         <link
           rel='preconnect'
@@ -22,34 +22,34 @@ const PrivacyPolicy = () => {
       <main className='main-content'>
         <div className='policy-container'>
           <div className='policy-header'>
-            <h2>FANTV PRIVACY POLICY</h2>
+            <h2>MakeMySong PRIVACY POLICY</h2>
           </div>
 
           <div className='policy-intro'>
             <p>
-              We, ArtistFirst Technology FZE ("we", "our", "us", or "FanTV"),
-              are committed to protect the privacy of the users of FanTV ("you",
-              "your", or "User") and therefore, seek to follow the highest
-              standards to secure and protect the information shared by you with
-              us.
+              We, ArtistFirst Technology FZE ("we", "our", "us", or
+              "MakeMySong"), are committed to protect the privacy of the users
+              of MakeMySong ("you", "your", or "User") and therefore, seek to
+              follow the highest standards to secure and protect the information
+              shared by you with us.
             </p>
             <p>
               This Privacy Policy describes the manner of collection, storage,
-              use and sharing of personal information that is collected by FanTV
-              from the Users and the choices and controls available to the Users
-              regarding the information provided to us when you avail the
-              services of FanTV for the purpose of hosting, listening, viewing,
-              publishing, transacting, displaying, or uploading content,
-              information or views, through our products, features,
-              technologies, software, and related services provided to you from
-              our platforms, applications, websites, or through any other mode
-              or media (collectively, the "Service").
+              use and sharing of personal information that is collected by
+              MakeMySong from the Users and the choices and controls available
+              to the Users regarding the information provided to us when you
+              avail the services of MakeMySong for the purpose of hosting,
+              listening, viewing, publishing, transacting, displaying, or
+              uploading content, information or views, through our products,
+              features, technologies, software, and related services provided to
+              you from our platforms, applications, websites, or through any
+              other mode or media (collectively, the "Service").
             </p>
             <p>
-              This Privacy Policy is to be read in conjunction with the FanTV
-              Terms of Use. All defined terms that have not been specifically
-              defined herein shall have the same meaning as provided under the
-              FanTV Terms of Use.
+              This Privacy Policy is to be read in conjunction with the
+              MakeMySong Terms of Use. All defined terms that have not been
+              specifically defined herein shall have the same meaning as
+              provided under the MakeMySong Terms of Use.
             </p>
           </div>
 
@@ -63,9 +63,9 @@ const PrivacyPolicy = () => {
           </div>
 
           <div className='policy-section'>
-            <h3>2. INFORMATION COLLECTED BY FANTV</h3>
+            <h3>2. INFORMATION COLLECTED BY MakeMySong</h3>
             <p>
-              In order to provide the Service, FanTV collects data via
+              In order to provide the Service, MakeMySong collects data via
               information provided to us by the Users, information collected
               while browsing or navigating through the Service, information
               inferred through usage and log data, and information collected
@@ -75,10 +75,10 @@ const PrivacyPolicy = () => {
             <div className='policy-subsection'>
               <h4>a. Information provided to us by the User.</h4>
               <p>
-                FanTV collects content, communications, and other information
-                provided by the Users while using the Service, including while
-                creating an account without which FanTV will not be able to
-                provide the Service.
+                MakeMySong collects content, communications, and other
+                information provided by the Users while using the Service,
+                including while creating an account without which MakeMySong
+                will not be able to provide the Service.
               </p>
               <p>
                 The following personal information about the user may be
@@ -92,9 +92,9 @@ const PrivacyPolicy = () => {
                 <li>Address and Country of the User</li>
                 <li>
                   Information from third parties – the User may choose to share
-                  certain data with FanTV from third parties if the User chooses
-                  to register with FanTV using a third-party service such as
-                  Google.
+                  certain data with MakeMySong from third parties if the User
+                  chooses to register with MakeMySong using a third-party
+                  service such as Google.
                 </li>
               </ol>
               <p>
@@ -107,14 +107,15 @@ const PrivacyPolicy = () => {
             <div className='policy-subsection'>
               <h4>b. Information collected during the use of the Service:</h4>
               <p>
-                FanTV collects information about how you use our Service such as
-                the types of content that you view or engage with, the features
-                you use, the actions you take, the accounts you interact with,
-                the time, frequency, and duration of your activities.
+                MakeMySong collects information about how you use our Service
+                such as the types of content that you view or engage with, the
+                features you use, the actions you take, the accounts you
+                interact with, the time, frequency, and duration of your
+                activities.
               </p>
               <p>
-                Further, when the User uses our Service, FanTV may also collect
-                information relating to the User's device such as:
+                Further, when the User uses our Service, MakeMySong may also
+                collect information relating to the User's device such as:
               </p>
               <p>
                 Device attributes such as the operating system of the device,
@@ -133,24 +134,25 @@ const PrivacyPolicy = () => {
                 Cookies – The Service uses cookies and other similar
                 technologies which are necessary to its functioning and to
                 provide the Service. Some of these cookies are essential to
-                FanTV in order to provide you with the Service.
+                MakeMySong in order to provide you with the Service.
               </p>
               <p>Information provided by the User while creating content:</p>
               <ol>
                 <li>
-                  FanTV may collect and store all the content posted by you on
-                  the Service, including but not limited to videos, photographs,
-                  sound recordings, musical works embodied therein, comments,
-                  and texts.
+                  MakeMySong may collect and store all the content posted by you
+                  on the Service, including but not limited to videos,
+                  photographs, sound recordings, musical works embodied therein,
+                  comments, and texts.
                 </li>
                 <li>
-                  FanTV may collect any personal correspondences such as emails
-                  or letters sent by the Users, and any emails or letters sent
-                  by third parties/other users regarding your activity or posts.
+                  MakeMySong may collect any personal correspondences such as
+                  emails or letters sent by the Users, and any emails or letters
+                  sent by third parties/other users regarding your activity or
+                  posts.
                 </li>
                 <li>
-                  FanTV may collect information, including but not limited to,
-                  when you provide feedback(s), modify your content or email
+                  MakeMySong may collect information, including but not limited
+                  to, when you provide feedback(s), modify your content or email
                   preferences, participate in contests, respond to surveys,
                   provide comments, submit forms, or communicate with us. This
                   information may include your name, e-mail id, mobile number,
@@ -163,10 +165,10 @@ const PrivacyPolicy = () => {
           <div className='policy-section'>
             <h3>3. LEGAL BASIS FOR COLLECTING INFORMATION</h3>
             <p>
-              In accordance with the prevailing laws, FanTV will only collect
-              and process personal data about you where we have lawful basis, in
-              a fair and transparent manner. Lawful basis on which we would
-              process our personal information includes obtaining explicit
+              In accordance with the prevailing laws, MakeMySong will only
+              collect and process personal data about you where we have lawful
+              basis, in a fair and transparent manner. Lawful basis on which we
+              would process our personal information includes obtaining explicit
               "consent" from you for processing your personal information,
               processing for "legitimate interests" where processing is
               necessary by us to provide you with customer support and for
@@ -207,8 +209,8 @@ const PrivacyPolicy = () => {
               </li>
             </ol>
             <p>
-              FanTV may collect information for statistical analysis, i.e., to
-              analyse and understand our audience, improve our service
+              MakeMySong may collect information for statistical analysis, i.e.,
+              to analyse and understand our audience, improve our service
               (including our user interface experiences), recommendation
               algorithms and delivery.
             </p>
@@ -219,11 +221,11 @@ const PrivacyPolicy = () => {
             <p>
               The Information as supplied by the Users enables us to improve the
               Service and provide you the most user-friendly experience. All
-              required information is service dependent, and FanTV may use the
-              above said user Information to, maintain, protect, and improve the
-              Service (including advertising on the Service) and for developing
-              new services. We may also use your email address or other
-              personally identifiable information to send commercial or
+              required information is service dependent, and MakeMySong may use
+              the above said user Information to, maintain, protect, and improve
+              the Service (including advertising on the Service) and for
+              developing new services. We may also use your email address or
+              other personally identifiable information to send commercial or
               marketing messages with your consent [with an option to
               subscribe/unsubscribe (where feasible)]. We may, however, use your
               email address without further consent for non-marketing or
@@ -259,13 +261,13 @@ const PrivacyPolicy = () => {
             <h3>5. HOW IS YOUR INFORMATION SHARED</h3>
             <ol type='a'>
               <li>
-                FanTV does not share your information with any third party
+                MakeMySong does not share your information with any third party
                 without obtaining prior consent, with the exception of the
                 following limited circumstance:
               </li>
               <li>
-                FanTV may provide personal information when it is requested or
-                required by law or by any court of law or government to
+                MakeMySong may provide personal information when it is requested
+                or required by law or by any court of law or government to
                 disclose, for the purpose of verification of identity, or for
                 the prevention, detection, investigation including cyber
                 incidents, or for prosecution and punishment of offences. These
@@ -274,39 +276,40 @@ const PrivacyPolicy = () => {
                 applicable laws and regulations.
               </li>
               <li>
-                FanTV may provide personal information to our affiliates and
-                other trusted businesses or persons such as service providers to
-                help us with customer support, payment processing, data
-                analytics, technical support, marketing support, or support for
-                securing our systems. The information will be based on in
+                MakeMySong may provide personal information to our affiliates
+                and other trusted businesses or persons such as service
+                providers to help us with customer support, payment processing,
+                data analytics, technical support, marketing support, or support
+                for securing our systems. The information will be based on in
                 compliance with this Privacy Policy and any other appropriate
                 confidentiality and security measures.
               </li>
               <li>
-                FanTV may share aggregated statistical data with our partners,
-                sponsors, and suppliers about how our users are interacting with
-                our Service and availing of the features offered.
+                MakeMySong may share aggregated statistical data with our
+                partners, sponsors, and suppliers about how our users are
+                interacting with our Service and availing of the features
+                offered.
               </li>
               <li>
-                FanTV may provide sponsors with reports containing aggregate
-                statistical data about how our Users are interacting with our
-                Service and to determine the kinds of people viewing their ads
-                and how they are performing. This aggregated information may
-                include demographic data such as age range and/or geographic
-                location of groups of our customers. This aggregated data does
-                not include contact details (such as names, addresses or email
-                addresses) that can be used to personally identify you or
-                contact you.
+                MakeMySong may provide sponsors with reports containing
+                aggregate statistical data about how our Users are interacting
+                with our Service and to determine the kinds of people viewing
+                their ads and how they are performing. This aggregated
+                information may include demographic data such as age range
+                and/or geographic location of groups of our customers. This
+                aggregated data does not include contact details (such as names,
+                addresses or email addresses) that can be used to personally
+                identify you or contact you.
               </li>
               <li>
-                FanTV may share your personal information in order to enforce
-                applicable Terms of Use of the Service, including investigation
-                of potential violations, to detect, prevent, or otherwise
-                address fraud, security, or technical issues, to comply with any
-                applicable law, legal obligation, to protect the rights,
-                property, safety, or security of third parties, comply with a
-                court order, or request from governmental authority or law
-                enforcement agencies.
+                MakeMySong may share your personal information in order to
+                enforce applicable Terms of Use of the Service, including
+                investigation of potential violations, to detect, prevent, or
+                otherwise address fraud, security, or technical issues, to
+                comply with any applicable law, legal obligation, to protect the
+                rights, property, safety, or security of third parties, comply
+                with a court order, or request from governmental authority or
+                law enforcement agencies.
               </li>
             </ol>
             <p>
@@ -323,14 +326,15 @@ const PrivacyPolicy = () => {
           <div className='policy-section'>
             <h3>6. RETENTION OF INFORMATION</h3>
             <p>
-              FanTV retains the information collected information for as long as
-              required in order to provide the Service. Personal data collected
-              shall be retained as long as your account is maintained, and till
-              the time our Service is used and accessed by you. The information
-              will be deleted on a request from the User or at the deletion of
-              the account. However, after the account is deleted or the User has
-              requested for the information to be deleted, FanTV may archive
-              and/or retain some essential information for legal purposes.
+              MakeMySong retains the information collected information for as
+              long as required in order to provide the Service. Personal data
+              collected shall be retained as long as your account is maintained,
+              and till the time our Service is used and accessed by you. The
+              information will be deleted on a request from the User or at the
+              deletion of the account. However, after the account is deleted or
+              the User has requested for the information to be deleted,
+              MakeMySong may archive and/or retain some essential information
+              for legal purposes.
             </p>
           </div>
 
@@ -357,7 +361,7 @@ const PrivacyPolicy = () => {
           <div className='policy-section'>
             <h3>8. KEEPING PERSONAL DATA SAFE</h3>
             <p>
-              FanTV takes appropriate security measures to protect against
+              MakeMySong takes appropriate security measures to protect against
               unauthorized access to or unauthorized alteration, disclosure, or
               destruction of your information. These include appropriate
               technical and organisational measures including but not limited to
@@ -395,16 +399,16 @@ const PrivacyPolicy = () => {
               under the supervision of their parent or legal guardian.
             </p>
             <p>
-              FanTV considers it the responsibility of parents to monitor their
-              children's use of our Services. Nevertheless, it is our policy not
-              to collect and process any personal information from children
-              below 18 years of age or offer to send any promotional materials
-              to persons in that category. We do not seek or intend to seek or
-              receive any personal information from children. Should a parent or
-              guardian have reasons to believe that a minor has provided us with
-              personal information without their prior consent, please contact
-              our customer support team to ensure that the personal information
-              is removed from the Service.
+              MakeMySong considers it the responsibility of parents to monitor
+              their children's use of our Services. Nevertheless, it is our
+              policy not to collect and process any personal information from
+              children below 18 years of age or offer to send any promotional
+              materials to persons in that category. We do not seek or intend to
+              seek or receive any personal information from children. Should a
+              parent or guardian have reasons to believe that a minor has
+              provided us with personal information without their prior consent,
+              please contact our customer support team to ensure that the
+              personal information is removed from the Service.
             </p>
           </div>
 
@@ -435,15 +439,11 @@ const PrivacyPolicy = () => {
               If you require any information or clarification regarding the use
               of your personal information or this Privacy Policy, or grievances
               with respect to use of your personal information, please email us
-              at: <a href='mailto:legal@fantv.in'>legal@fantv.in</a>.
+              at: <a href='mailto:legal@fantv.in.in'>legal@MakeMySong.in</a>.
             </p>
           </div>
         </div>
       </main>
-
-      <footer className='footer'>
-        <div className='footer-content'>Privacy and Policy</div>
-      </footer>
 
       <style jsx>{`
         /* Global Styles */
